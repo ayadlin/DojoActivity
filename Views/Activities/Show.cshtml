@@ -1,0 +1,29 @@
+@model DojoActivity.Models.Activity 
+@using DojoActivity.Models
+<nav>
+    <h1>@Model.Title</h1>
+    <a href="/activity">Dashboard</a>
+    <a href="/home/logout">Logout</a>
+</nav>
+<h3>Event Coordinator</h3>
+
+<ul>
+    <li>@Model.Coordinator.FirstName</li> 
+</ul>
+<h3>Participants:</h3>
+<ul>
+    @foreach(RSVP rsvp in @Model.Guests) {
+    <li>@rsvp.Guest.FirstName @rsvp.Guest.LastName</li>
+    }
+</ul>
+
+<h3>Description</h3>
+
+<ul>
+    <li>@Model.Description</li>
+</ul>
+
+<a href="/activity/rsvp/@Model.ActivityId"><button>Join</button></a>
+<a href="/activity/unrsvp/@Model.ActivityId"><button>Leave</button></a>
+
+<!--<li>@Model.Coordinator.FirstName</li> sometimes crashes, it nevr happens with @Model.CoordinatorId-->

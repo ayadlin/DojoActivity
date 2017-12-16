@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model DojoActivity.Models.Dashboard
+@using DojoActivity.Models;
+@Html.Partial("Partials/Header",Model.User)
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Date and Time</th>
+            <th>Duration</th>
+            <th>Event Coordinator</th>
+            <th>Number of Participants </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Activity w in Model.Activities)
+        {
+        <tr>
+            <td><a href="/activity/show/@w.ActivityId">@w.Title</a></td>
+            <td>@w.Date.ToString("D")at @w.Time</td>
+            <td>@w.Duration @w.Units</td>
+            
+            <td>@w.Coordinator.FirstName</td>
+            <td>@w.Guests.Count()</td>
+            @{
+                if(w.CoordinatorId == Model.User.UserId)
+                    {<td><a href="/activity/delete/@w.ActivityId">Delete</a></td>}
+                else if(w.Guests.Where(g => g.UserId == Model.User.UserId).SingleOrDefault() == null)
+                    {<td><a href="/activity/rsvp/@w.ActivityId">Join</a></td>}
+                else
+                    {<td><a href="/activity/unrsvp/@w.ActivityId">Leave</a></td>}
+            }
+        </tr>
+        }
+    </tbody>
+    <a href="/Activity/Create"><button>Create</button></a>
+</table>
